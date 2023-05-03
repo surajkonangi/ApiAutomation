@@ -1,13 +1,11 @@
 package com.apitraining.Automation.testscripts;
+import org.testng.annotations.Test;
 
 import com.apitraining.Automation.utils.AllApiMethods;
 
 public class ApiGetCall {
-	
-
-
-	public static void main(String[] args) {
-		
+	@Test
+	public void getcall() {
 		AllApiMethods get = new AllApiMethods();
 		get.apigetcall();
 
