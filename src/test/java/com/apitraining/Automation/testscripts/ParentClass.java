@@ -2,6 +2,7 @@ package com.apitraining.Automation.testscripts;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
 
 import java.io.FileInputStream;
 import java.io.FileReader;
@@ -12,6 +13,7 @@ import org.json.simple.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+import org.testng.annotations.AfterSuite;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeSuite;
 
@@ -19,6 +21,7 @@ public class ParentClass {
 	public Response response;
 	public Properties prop;
 	public JSONObject input;
+	private RequestSpecification authRequest;
 
 	@BeforeSuite
 	public void beforeSuite() throws Exception {
@@ -42,6 +45,8 @@ public class ParentClass {
 		input.get("salary");
 		input.get("age");
 		RestAssured.given().body(input.toJSONString());
+		authRequest = RestAssured.given().auth()
+				.basic(prop.getProperty("user"), prop.getProperty("password"));
 	}
 
 
@@ -53,6 +58,11 @@ public class ParentClass {
 		System.out.println("the status time is " + response.getTime());
 		System.out.println("The status code is " + response.getStatusCode());
 		Assert.assertEquals(response.getStatusCode(), 200);
+	}
+	
+	@AfterSuite
+	public void afterSuite() {
+		System.out.println("Suite executed successful");
 	}
 
 }
