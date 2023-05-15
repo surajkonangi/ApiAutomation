@@ -30,7 +30,6 @@ public class TestngUtils {
 	public void beforeSuite() throws Exception {
 		prop = new Properties();
 		FileInputStream path = new FileInputStream(ConstantPaths.Testdata_Properties);
-
 		prop.load(path);
 		RestAssured.baseURI = prop.getProperty("url");
 		logger.info("Base Uri successful");

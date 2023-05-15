@@ -1,6 +1,8 @@
 package com.apitraining.Automation.testscripts;
 
+import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -8,6 +10,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 import org.testng.annotations.Test;
+
+import com.apitraining.Automation.utils.ConstantPaths;
 
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
@@ -18,10 +22,12 @@ public class GetSpecificData {
 	private Pattern pattern;
 
 	@Test
-	public void get() {
-		pattern = Pattern.compile("^([0-9]+)");
-		String url = "https://dummy.restapiexample.com/api/v1/employees";
-		Response response = RestAssured.given().get(url);
+	public void get() throws Exception {
+		Properties prop = new Properties();
+		FileInputStream path = new FileInputStream(ConstantPaths.Testdata_Properties);
+		prop.load(path);
+		pattern = Pattern.compile("([0-9]+)");
+		Response response = RestAssured.given().get(prop.getProperty("geturl"));
 		System.out.println(response.getBody().asString());
 
 		JsonPath jpath = response.jsonPath();
