@@ -33,7 +33,8 @@ public class DeleteApiWiremock {
 
 	@Test
 	public void delete() throws URISyntaxException {
-		Response response = RestAssured.given().baseUri("http://localhost:8080").accept(ContentType.JSON).when()
+		String jwtauthsecret = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjM0NTY3ODkwIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
+		Response response = RestAssured.given().baseUri("http://localhost:8080").header("Authentication", jwtauthsecret).accept(ContentType.JSON).when()
 				.delete("/api/employee/delete/1").then().assertThat().statusCode(200).and().log().all().extract()
 				.response();
 		System.out.println(response.getBody().asString());

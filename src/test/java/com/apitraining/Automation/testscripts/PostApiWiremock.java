@@ -49,7 +49,8 @@ public class PostApiWiremock {
 
 	@Test
 	public void post() throws URISyntaxException {
-		Response res = RestAssured.given().baseUri("http://localhost:8080").body(input.toString())
+		String bearertoken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjM0NTY3ODkwIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
+		Response res = RestAssured.given().baseUri("http://localhost:8080").header("Authentication", bearertoken).body(input.toString())
 				.accept(ContentType.JSON).when().post("/api/employee/create").then().assertThat().statusCode(200).and()
 				.body("employee_name", Matchers.equalTo("suraj")).extract().response();
 		System.out.println(res.getBody().asString());

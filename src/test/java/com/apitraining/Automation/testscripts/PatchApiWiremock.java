@@ -45,15 +45,18 @@ public class PatchApiWiremock {
 		mockResponse.withStatus(200).withHeader("Content-Type", "application/json");
 
 		WireMock.configureFor(HOST, PORT); // http://localhost:8080
-		WireMock.stubFor(WireMock.request("PATCH", WireMock.urlEqualTo("/api/employee/partialupdate"))
-                .willReturn(mockResponse));
-		//WireMock.stubFor(WireMock.patch("/api/employee/partialupdate").willReturn(mockResponse));
+		WireMock.stubFor(
+				WireMock.request("PATCH", WireMock.urlEqualTo("/api/employee/partialupdate")).willReturn(mockResponse));
+		// WireMock.stubFor(WireMock.patch("/api/employee/partialupdate").willReturn(mockResponse));
 	}
 
 	@Test
 	public void put() throws URISyntaxException {
-		Response response = RestAssured.given().baseUri("http://localhost:8080").body(input.toString())
-				.accept(ContentType.JSON).when().patch("/api/employee/partialupdate").then().assertThat().statusCode(200).and()
+		String digestauthusername = "Suraj Konangi";
+		String digestauthpassword = "Suraj123";
+		Response response = RestAssured.given().baseUri("http://localhost:8080").auth()
+				.digest(digestauthusername, digestauthpassword).body(input.toString()).accept(ContentType.JSON).when()
+				.patch("/api/employee/partialupdate").then().assertThat().statusCode(200).and()
 				.body("employee_name", Matchers.equalTo("suraj")).extract().response();
 		System.out.println(response.getBody().asString());
 	}

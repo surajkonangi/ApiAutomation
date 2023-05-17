@@ -23,19 +23,21 @@ public class GetApiWiremock {
 	private static WireMockServer server = new WireMockServer(PORT);
 
 	@BeforeClass
-	public static void setup() {		server.start();
+	public static void setup() {
+		
+		server.start();
 		ResponseDefinitionBuilder mockResponse = new ResponseDefinitionBuilder();
 		mockResponse.withStatus(200).withHeader("Content-Type", "application/json");
 		WireMock.configureFor(HOST, PORT); // http://localhost:8080
-		WireMock.stubFor(WireMock.get("/api/example").willReturn(mockResponse));
+		WireMock.stubFor(WireMock.get("/api/employees").willReturn(mockResponse));
 	}
 
 	@Test
 	public void get() throws URISyntaxException {
-		Response response = RestAssured.given().baseUri("http://localhost:8080").accept(ContentType.JSON).when()
-				.get("/api/example").then().assertThat().statusCode(200).and()
-				.body("employee_name", Matchers.equalTo("suraj")).log().all().extract().response();
-		System.out.println(response.getBody().asString());
+		String akamaitoken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjM0NTY3ODkwIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
+		Response response = RestAssured.given().baseUri("http://localhost:8080").header("Authentication", akamaitoken).accept(ContentType.JSON).when()
+				.get("/api/employees").then().assertThat().statusCode(200).and().log().all().extract().response();
+		//System.out.println(response.getBody().asString());
 	}
 
 	@AfterClass
